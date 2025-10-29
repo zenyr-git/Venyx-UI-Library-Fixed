@@ -451,6 +451,7 @@ do
 		local section = section.new(self, ...)
 		
 		table.insert(self.sections, section)
+		self:Resize()
 		
 		return section
 	end
@@ -732,6 +733,7 @@ do
 			debounce = false
 		end)
 		
+		self:Resize()
 		return button
 	end
 	
@@ -807,6 +809,7 @@ do
 			end
 		end)
 		
+		self:Resize()
 		return toggle
 	end
 	
@@ -917,6 +920,7 @@ do
 			end
 		end)
 		
+		self:Resize()
 		return textbox
 	end
 	
@@ -1026,6 +1030,7 @@ do
 			end
 		end)
 		
+		self:Resize()
 		return keybind
 	end
 	
@@ -1552,6 +1557,7 @@ do
 			animate()
 		end)
 		
+		self:Resize()
 		return colorpicker
 	end
 	
@@ -1705,6 +1711,7 @@ do
 			end
 		end)
 		
+		self:Resize()
 		return slider
 	end
 	
@@ -1776,7 +1783,7 @@ do
 					BorderSizePixel = 0,
 					Position = UDim2.new(0, 4, 0, 4),
 					Size = UDim2.new(1, -8, 1, -8),
-					CanvasPosition = Vector2.new(0, 0),  -- Fixed potential bug with invalid canvas position
+					CanvasPosition = Vector2.new(0, 0),
 					CanvasSize = UDim2.new(0, 0, 0, 120),
 					ZIndex = 2,
 					ScrollBarThickness = 3,
@@ -1830,6 +1837,7 @@ do
 			self:Resize()
 		end)
 		
+		self:Resize()
 		return dropdown
 	end
 	
@@ -1931,13 +1939,19 @@ do
 	function page:Resize(scroll)
 		local padding = 10
 		local size = 0
+		local n = #self.sections
 		
-		for i, section in pairs(self.sections) do
-			size = size + section.container.Parent.AbsoluteSize.Y + padding
+		if n > 0 then
+			for i, section in pairs(self.sections) do
+				size = size + section.container.Parent.AbsoluteSize.Y
+				if i < n then
+					size = size + padding
+				end
+			end
 		end
 		
 		self.container.CanvasSize = UDim2.new(0, 0, 0, size)
-		self.container.ScrollBarImageTransparency = size > self.container.AbsoluteSize.Y and 0 or 1  -- Fixed potential boolean to number issue by conditional
+		self.container.ScrollBarImageTransparency = size > self.container.AbsoluteSize.Y and 0 or 1
 		
 		if scroll then
 			utility:Tween(self.container, {CanvasPosition = Vector2.new(0, self.lastPosition or 0)}, 0.2)
