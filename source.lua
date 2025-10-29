@@ -228,7 +228,8 @@ do
 		local container = utility:Create("ScreenGui", {
 			Name = title,
 			Parent = player:WaitForChild("PlayerGui"),
-			ResetOnSpawn = false
+			ResetOnSpawn = false,
+			DisplayOrder = 1000  -- High DisplayOrder to overlay other GUIs
 		}, {
 			utility:Create("ImageLabel", {
 				Name = "Main",
